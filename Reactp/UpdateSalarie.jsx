@@ -1,26 +1,28 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useNavigation, useParams } from "react-router-dom"
+import { selectAllSalaries } from "./salarie_reducer"
+import AfficherSalaries from "./AfficherSalaries"
 
+const UpdateSalarie = () => {
 
-const AjouterSalarie = () =>{
-
-
+    const  { matricule } = useParams()
+    const salarie = useSelector(selectAllSalaries).filter(s => s.matricule === matricule)
     const dispatch = useDispatch()
 
-    const [matriculeS, setMatriculeS] = useState() 
-    const [nom, setNom] = useState() 
-    const [service, setService] = useState() 
-    const [salaire, setSalaire] = useState() 
-    const [dateA, setDateA] = useState() 
+    const [matriculeS, setMatriculeS] = useState(salarie[0].matricule) 
+    const [nom, setNom] = useState(salarie[0].nom) 
+    const [service, setService] = useState(salarie[0].service) 
+    const [salaire, setSalaire] = useState(salarie[0].salaire) 
+    const [dateA, setDateA] = useState(salarie[0].dateAffectation) 
     const navigate =useNavigate()
 
     function handleClick () {
         const action = {
             type: "MODIFIER",
             payload: {
-                id: Math.random() * 55,
-                matricule: matriculeS,
+                id:salarie[0].id,
+                matricule: matricule,
                 nom: nom,
                 service: service,
                 salaire: salaire,
@@ -29,12 +31,11 @@ const AjouterSalarie = () =>{
         }
 
         dispatch(action)
-        alert("Ajouter avec succes !")
+        alert("Modifier avec succes !")
         navigate("/")
     }
 
-    return(
-        <div>
+        return (
             <form>
                 Matricule :<input value={matriculeS} onChange={e => setMatriculeS(e.target.value)} type="text" />
                 Nom Complet :<input value={nom} onChange={e => setNom(e.target.value)} type="text" />
@@ -43,9 +44,9 @@ const AjouterSalarie = () =>{
                 Date Affectatin :<input type="text" value={dateA} onChange={e => setDateA(e.target.value)} />
                 <button onClick={handleClick} type="button">Modifier</button>
             </form>
-        </div>
-    )
-
+        )
 }
 
-export default AjouterSalarie
+
+
+export default UpdateSalarie
