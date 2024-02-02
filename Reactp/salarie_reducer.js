@@ -23,4 +23,4 @@ const salarie_reducer = (state=initialState, action) => {
 }
 
 export const selectAllSalaries = state => state.salaries
-export default salarie_reducer
+export default salarie_reducer 
